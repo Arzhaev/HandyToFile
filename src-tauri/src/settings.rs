@@ -799,19 +799,19 @@ fn default_capture_actions() -> Vec<CaptureAction> {
 }
 
 fn default_notes_path() -> String {
-    "D:/Obsidian/00 Inbox/Voice Notes.md".to_string()
+    "C:/Users/user/Documents/HandyToFile/notes.md".to_string()
 }
 
 fn default_tasks_path() -> String {
-    "D:/Obsidian/00 Inbox/Tasks Inbox.md".to_string()
+    "C:/Users/user/Documents/HandyToFile/tasks.md".to_string()
 }
 
 fn default_ideas_path() -> String {
-    "D:/Obsidian/00 Inbox/Ideas Inbox.md".to_string()
+    "C:/Users/user/Documents/HandyToFile/ideas.md".to_string()
 }
 
 fn default_shopping_path() -> String {
-    "D:/Obsidian/00 Inbox/Shopping Inbox.md".to_string()
+    "C:/Users/user/Documents/HandyToFile/shopping.md".to_string()
 }
 
 fn ensure_post_process_defaults(settings: &mut AppSettings) -> bool {

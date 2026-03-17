@@ -113,11 +113,13 @@ powershell -ExecutionPolicy Bypass -File run-dev.ps1
 
 По умолчанию:
 ```
-D:/Obsidian/00 Inbox/Voice Notes.md     (заметки)
-D:/Obsidian/00 Inbox/Tasks Inbox.md     (задачи)
-D:/Obsidian/00 Inbox/Ideas Inbox.md     (идеи)
-D:/Obsidian/00 Inbox/Shopping Inbox.md  (покупки)
+C:/Users/user/Documents/HandyToFile/notes.md     (заметки)
+C:/Users/user/Documents/HandyToFile/tasks.md     (задачи)
+C:/Users/user/Documents/HandyToFile/ideas.md     (идеи)
+C:/Users/user/Documents/HandyToFile/shopping.md  (покупки)
 ```
+
+Папка создаётся автоматически при первой записи.
 
 ---
 

@@ -133,12 +133,12 @@ HandyToFile — локальный десктопный форк [Handy](https:/
 
 Форк предзаполняет редактируемые пути по умолчанию:
 
-- `D:/Obsidian/00 Inbox/Voice Notes.md`
-- `D:/Obsidian/00 Inbox/Tasks Inbox.md`
-- `D:/Obsidian/00 Inbox/Ideas Inbox.md`
-- `D:/Obsidian/00 Inbox/Shopping Inbox.md`
+- `C:/Users/user/Documents/HandyToFile/notes.md`
+- `C:/Users/user/Documents/HandyToFile/tasks.md`
+- `C:/Users/user/Documents/HandyToFile/ideas.md`
+- `C:/Users/user/Documents/HandyToFile/shopping.md`
 
-Это обычные пути к файлам. Приложение не привязано к Obsidian.
+Папки создаются автоматически при первой записи. Пути меняются в Settings → Capture File Paths.
 
 ## Конфигурация
 
@@ -156,10 +156,10 @@ HandyToFile — локальный десктопный форк [Handy](https:/
 
 ```json
 {
-  "notes_path": "D:/Obsidian/00 Inbox/Voice Notes.md",
-  "tasks_path": "D:/Obsidian/00 Inbox/Tasks Inbox.md",
-  "ideas_path": "D:/Obsidian/00 Inbox/Ideas Inbox.md",
-  "shopping_path": "D:/Obsidian/00 Inbox/Shopping Inbox.md",
+  "notes_path": "C:/Users/user/Documents/HandyToFile/notes.md",
+  "tasks_path": "C:/Users/user/Documents/HandyToFile/tasks.md",
+  "ideas_path": "C:/Users/user/Documents/HandyToFile/ideas.md",
+  "shopping_path": "C:/Users/user/Documents/HandyToFile/shopping.md",
   "recognition_profiles": [
     {
       "id": "ru_mixed",
