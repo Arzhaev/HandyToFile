@@ -256,13 +256,14 @@ export const HandyKeysShortcutInput: React.FC<HandyKeysShortcutInputProps> = ({
   }
 
   // Get translated name and description for the binding
-  const translatedName = t(
-    `settings.general.shortcut.bindings.${shortcutId}.name`,
-    binding.name,
-  );
+  const translatedName = t(`settings.general.shortcut.bindings.${shortcutId}.name`, {
+    defaultValue: binding.name,
+  });
   const translatedDescription = t(
     `settings.general.shortcut.bindings.${shortcutId}.description`,
-    binding.description,
+    {
+      defaultValue: binding.description,
+    },
   );
 
   return (

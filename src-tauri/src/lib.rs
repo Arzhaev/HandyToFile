@@ -2,6 +2,7 @@ mod actions;
 #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
 mod apple_intelligence;
 mod audio_feedback;
+mod capture;
 pub mod audio_toolkit;
 pub mod cli;
 mod clipboard;
@@ -339,6 +340,10 @@ pub fn run(cli_args: CliArgs) {
         shortcut::get_available_typing_tools,
         shortcut::change_typing_tool_setting,
         shortcut::change_external_script_path_setting,
+        shortcut::change_notes_path_setting,
+        shortcut::change_tasks_path_setting,
+        shortcut::change_ideas_path_setting,
+        shortcut::change_shopping_path_setting,
         shortcut::change_clipboard_handling_setting,
         shortcut::change_auto_submit_setting,
         shortcut::change_auto_submit_key_setting,

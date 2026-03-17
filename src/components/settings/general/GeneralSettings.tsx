@@ -10,6 +10,7 @@ import { useSettings } from "../../../hooks/useSettings";
 import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
 import { ModelSettingsCard } from "./ModelSettingsCard";
+import { CaptureFilePaths } from "../CaptureFilePaths";
 
 export const GeneralSettings: React.FC = () => {
   const { t } = useTranslation();
@@ -18,7 +19,18 @@ export const GeneralSettings: React.FC = () => {
     <div className="max-w-3xl w-full mx-auto space-y-6">
       <SettingsGroup title={t("settings.general.title")}>
         <ShortcutInput shortcutId="transcribe" grouped={true} />
+        <ShortcutInput shortcutId="append_to_notes_file" grouped={true} />
+        <ShortcutInput shortcutId="append_to_tasks_file" grouped={true} />
+        <ShortcutInput shortcutId="append_to_ideas_file" grouped={true} />
+        <ShortcutInput shortcutId="append_to_shopping_file" grouped={true} />
         <PushToTalk descriptionMode="tooltip" grouped={true} />
+      </SettingsGroup>
+      <SettingsGroup
+        title={t("settings.general.capturePaths.title", {
+          defaultValue: "Capture Destinations",
+        })}
+      >
+        <CaptureFilePaths grouped={true} />
       </SettingsGroup>
       <ModelSettingsCard />
       <SettingsGroup title={t("settings.sound.title")}>

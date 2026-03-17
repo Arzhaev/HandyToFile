@@ -110,7 +110,7 @@ pub fn change_binding(
     id: String,
     binding: String,
 ) -> Result<BindingResponse, String> {
-    // Reject empty bindings — every shortcut should have a value
+    // Reject empty bindings вЂ” every shortcut should have a value
     if binding.trim().is_empty() {
         return Err("Binding cannot be empty".to_string());
     }
@@ -724,6 +724,40 @@ pub fn change_external_script_path_setting(
     let mut settings = settings::get_settings(&app);
     settings.external_script_path = path;
     settings::write_settings(&app, settings);
+    Ok(())
+}
+
+fn update_capture_path(app: &AppHandle, update: impl FnOnce(&mut settings::AppSettings)) {
+    let mut settings = settings::get_settings(app);
+    update(&mut settings);
+    settings::write_settings(app, settings);
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn change_notes_path_setting(app: AppHandle, path: String) -> Result<(), String> {
+    update_capture_path(&app, |settings| settings.notes_path = path);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn change_tasks_path_setting(app: AppHandle, path: String) -> Result<(), String> {
+    update_capture_path(&app, |settings| settings.tasks_path = path);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn change_ideas_path_setting(app: AppHandle, path: String) -> Result<(), String> {
+    update_capture_path(&app, |settings| settings.ideas_path = path);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn change_shopping_path_setting(app: AppHandle, path: String) -> Result<(), String> {
+    update_capture_path(&app, |settings| settings.shopping_path = path);
     Ok(())
 }
 

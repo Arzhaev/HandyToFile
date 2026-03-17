@@ -7,7 +7,11 @@ import {
   checkAccessibilityPermission,
   checkMicrophonePermission,
 } from "tauri-plugin-macos-permissions-api";
-import { ModelStateEvent, RecordingErrorEvent } from "./lib/types/events";
+import {
+  CaptureActionNotification,
+  ModelStateEvent,
+  RecordingErrorEvent,
+} from "./lib/types/events";
 import "./App.css";
 import AccessibilityPermissions from "./components/AccessibilityPermissions";
 import Footer from "./components/footer";
@@ -137,6 +141,24 @@ function App() {
       unlisten.then((fn) => fn());
     };
   }, [t]);
+
+  useEffect(() => {
+    const unlisten = listen<CaptureActionNotification>(
+      "capture-action-notification",
+      (event) => {
+        const { level, title, detail } = event.payload;
+        if (level === "error") {
+          toast.error(title, { description: detail });
+        } else {
+          toast.success(title, { description: detail });
+        }
+      },
+    );
+
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, []);
 
   const revealMainWindowForPermissions = async () => {
     try {

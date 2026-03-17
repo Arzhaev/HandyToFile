@@ -7,10 +7,10 @@ use log::warn;
 use std::sync::Arc;
 use tauri::{AppHandle, Manager};
 
-use crate::actions::ACTION_MAP;
+use crate::actions::{is_coordinated_binding, start_coordinated_action, stop_coordinated_action, ACTION_MAP};
 use crate::managers::audio::AudioRecordingManager;
 use crate::settings::get_settings;
-use crate::transcription_coordinator::is_transcribe_binding;
+
 use crate::TranscriptionCoordinator;
 
 /// Handle a shortcut event from either implementation.
@@ -34,8 +34,8 @@ pub fn handle_shortcut_event(
 ) {
     let settings = get_settings(app);
 
-    // Transcribe bindings are handled by the coordinator.
-    if is_transcribe_binding(binding_id) {
+    // Capture bindings are handled by the coordinator.
+    if is_coordinated_binding(app, binding_id) {
         if let Some(coordinator) = app.try_state::<TranscriptionCoordinator>() {
             coordinator.send_input(binding_id, hotkey_string, is_pressed, settings.push_to_talk);
         } else {
@@ -63,8 +63,8 @@ pub fn handle_shortcut_event(
 
     // Remaining bindings (e.g. "test") use simple start/stop on press/release.
     if is_pressed {
-        action.start(app, binding_id, hotkey_string);
+        start_coordinated_action(app, binding_id, hotkey_string);
     } else {
-        action.stop(app, binding_id, hotkey_string);
+        stop_coordinated_action(app, binding_id, hotkey_string);
     }
 }

@@ -6,17 +6,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Prerequisites:** [Rust](https://rustup.rs/) (latest stable), [Bun](https://bun.sh/)
 
+> **Windows:** используется npm вместо bun. Подробная инструкция с нуля: [SETUP_WINDOWS.md](SETUP_WINDOWS.md)
+
 ```bash
 # Install dependencies
 bun install
+# Windows:
+npm install --ignore-scripts
 
 # Run in development mode
 bun run tauri dev
+# Windows:
+powershell -ExecutionPolicy Bypass -File run-dev.ps1
 # If cmake error on macOS:
 CMAKE_POLICY_VERSION_MINIMUM=3.5 bun run tauri dev
 
 # Build for production
 bun run tauri build
+# Windows:
+# (set LIBCLANG_PATH and VULKAN_SDK first, then)
+npm run tauri build
 
 # Linting and formatting (run before committing)
 bun run lint              # ESLint for frontend

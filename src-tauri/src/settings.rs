@@ -92,6 +92,75 @@ pub struct LLMPrompt {
     pub prompt: String,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Type)]
+pub struct RecognitionCleanupOptions {
+    #[serde(default = "default_true")]
+    pub trim_whitespace: bool,
+    #[serde(default = "default_true")]
+    pub collapse_whitespace: bool,
+    #[serde(default)]
+    pub preserve_newlines: bool,
+    #[serde(default = "default_true")]
+    pub capitalize_first_letter: bool,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Type)]
+pub struct RecognitionProfile {
+    pub id: String,
+    pub name: String,
+    #[serde(default)]
+    pub language_hint: Option<String>,
+    #[serde(default)]
+    pub instruction_prompt: String,
+    pub cleanup_options: RecognitionCleanupOptions,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Type)]
+#[serde(rename_all = "snake_case")]
+pub enum OutputTargetType {
+    Paste,
+    AppendFile,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Type)]
+#[serde(rename_all = "snake_case")]
+pub enum CaptureFileSlot {
+    Notes,
+    Tasks,
+    Ideas,
+    Shopping,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Type)]
+#[serde(rename_all = "snake_case")]
+pub enum FileTemplateType {
+    NoteBullet,
+    TaskCheckbox,
+    IdeaEntry,
+    ShoppingCheckbox,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Type)]
+pub struct OutputTarget {
+    #[serde(rename = "type")]
+    pub r#type: OutputTargetType,
+    #[serde(default)]
+    pub file_slot: Option<CaptureFileSlot>,
+    #[serde(default)]
+    pub template_type: Option<FileTemplateType>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Type)]
+pub struct CaptureAction {
+    pub id: String,
+    pub name: String,
+    pub binding_id: String,
+    pub output_target: OutputTarget,
+    pub profile_id: String,
+    #[serde(default = "default_true")]
+    pub enabled: bool,
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct PostProcessProvider {
     pub id: String,
@@ -395,10 +464,26 @@ pub struct AppSettings {
     pub whisper_accelerator: WhisperAcceleratorSetting,
     #[serde(default)]
     pub ort_accelerator: OrtAcceleratorSetting,
+    #[serde(default = "default_recognition_profiles")]
+    pub recognition_profiles: Vec<RecognitionProfile>,
+    #[serde(default = "default_capture_actions")]
+    pub capture_actions: Vec<CaptureAction>,
+    #[serde(default = "default_notes_path")]
+    pub notes_path: String,
+    #[serde(default = "default_tasks_path")]
+    pub tasks_path: String,
+    #[serde(default = "default_ideas_path")]
+    pub ideas_path: String,
+    #[serde(default = "default_shopping_path")]
+    pub shopping_path: String,
 }
 
 fn default_model() -> String {
     "".to_string()
+}
+
+fn default_true() -> bool {
+    true
 }
 
 fn default_always_on_microphone() -> bool {
@@ -597,12 +682,136 @@ fn default_post_process_prompts() -> Vec<LLMPrompt> {
     vec![LLMPrompt {
         id: "default_improve_transcriptions".to_string(),
         name: "Improve Transcriptions".to_string(),
-        prompt: "Clean this transcript:\n1. Fix spelling, capitalization, and punctuation errors\n2. Convert number words to digits (twenty-five → 25, ten percent → 10%, five dollars → $5)\n3. Replace spoken punctuation with symbols (period → ., comma → ,, question mark → ?)\n4. Remove filler words (um, uh, like as filler)\n5. Keep the language in the original version (if it was french, keep it in french for example)\n\nPreserve exact meaning and word order. Do not paraphrase or reorder content.\n\nReturn only the cleaned transcript.\n\nTranscript:\n${output}".to_string(),
+        prompt: "Clean this transcript:\n1. Fix spelling, capitalization, and punctuation errors\n2. Convert number words to digits (twenty-five в†’ 25, ten percent в†’ 10%, five dollars в†’ $5)\n3. Replace spoken punctuation with symbols (period в†’ ., comma в†’ ,, question mark в†’ ?)\n4. Remove filler words (um, uh, like as filler)\n5. Keep the language in the original version (if it was french, keep it in french for example)\n\nPreserve exact meaning and word order. Do not paraphrase or reorder content.\n\nReturn only the cleaned transcript.\n\nTranscript:\n${output}".to_string(),
     }]
 }
 
 fn default_typing_tool() -> TypingTool {
     TypingTool::Auto
+}
+
+fn default_cleanup_options() -> RecognitionCleanupOptions {
+    RecognitionCleanupOptions {
+        trim_whitespace: true,
+        collapse_whitespace: true,
+        preserve_newlines: false,
+        capitalize_first_letter: true,
+    }
+}
+
+fn default_raw_cleanup_options() -> RecognitionCleanupOptions {
+    RecognitionCleanupOptions {
+        trim_whitespace: true,
+        collapse_whitespace: false,
+        preserve_newlines: true,
+        capitalize_first_letter: false,
+    }
+}
+
+fn default_recognition_profiles() -> Vec<RecognitionProfile> {
+    vec![
+        RecognitionProfile {
+            id: "ru_mixed".to_string(),
+            name: "Russian mixed".to_string(),
+            language_hint: Some("ru".to_string()),
+            instruction_prompt: "Keep the output primarily in Russian while preserving valid English technical terms, product names, brands, APIs, libraries, and model names exactly when appropriate. Do not force-translate established English terms.".to_string(),
+            cleanup_options: default_cleanup_options(),
+        },
+        RecognitionProfile {
+            id: "ru_only".to_string(),
+            name: "Russian only".to_string(),
+            language_hint: Some("ru".to_string()),
+            instruction_prompt: "Prefer a fully Russian result. Minimize unnecessary English insertions unless the source clearly requires them.".to_string(),
+            cleanup_options: default_cleanup_options(),
+        },
+        RecognitionProfile {
+            id: "en_only".to_string(),
+            name: "English only".to_string(),
+            language_hint: Some("en".to_string()),
+            instruction_prompt: "Return the final text in English.".to_string(),
+            cleanup_options: default_cleanup_options(),
+        },
+        RecognitionProfile {
+            id: "raw".to_string(),
+            name: "Raw".to_string(),
+            language_hint: None,
+            instruction_prompt: String::new(),
+            cleanup_options: default_raw_cleanup_options(),
+        },
+    ]
+}
+
+fn append_file_target(file_slot: CaptureFileSlot, template_type: FileTemplateType) -> OutputTarget {
+    OutputTarget {
+        r#type: OutputTargetType::AppendFile,
+        file_slot: Some(file_slot),
+        template_type: Some(template_type),
+    }
+}
+
+fn default_capture_actions() -> Vec<CaptureAction> {
+    vec![
+        CaptureAction {
+            id: "default_paste_ru".to_string(),
+            name: "Paste to Active Window".to_string(),
+            binding_id: "transcribe".to_string(),
+            output_target: OutputTarget {
+                r#type: OutputTargetType::Paste,
+                file_slot: None,
+                template_type: None,
+            },
+            profile_id: "ru_mixed".to_string(),
+            enabled: true,
+        },
+        CaptureAction {
+            id: "quick_note_ru".to_string(),
+            name: "Append to Notes File".to_string(),
+            binding_id: "append_to_notes_file".to_string(),
+            output_target: append_file_target(CaptureFileSlot::Notes, FileTemplateType::NoteBullet),
+            profile_id: "ru_mixed".to_string(),
+            enabled: true,
+        },
+        CaptureAction {
+            id: "quick_task_ru".to_string(),
+            name: "Append to Tasks File".to_string(),
+            binding_id: "append_to_tasks_file".to_string(),
+            output_target: append_file_target(CaptureFileSlot::Tasks, FileTemplateType::TaskCheckbox),
+            profile_id: "ru_mixed".to_string(),
+            enabled: true,
+        },
+        CaptureAction {
+            id: "quick_idea_ru".to_string(),
+            name: "Append to Ideas File".to_string(),
+            binding_id: "append_to_ideas_file".to_string(),
+            output_target: append_file_target(CaptureFileSlot::Ideas, FileTemplateType::IdeaEntry),
+            profile_id: "ru_mixed".to_string(),
+            enabled: true,
+        },
+        CaptureAction {
+            id: "quick_shopping_ru".to_string(),
+            name: "Append to Shopping File".to_string(),
+            binding_id: "append_to_shopping_file".to_string(),
+            output_target: append_file_target(CaptureFileSlot::Shopping, FileTemplateType::ShoppingCheckbox),
+            profile_id: "ru_mixed".to_string(),
+            enabled: true,
+        },
+    ]
+}
+
+fn default_notes_path() -> String {
+    "D:/Obsidian/00 Inbox/Voice Notes.md".to_string()
+}
+
+fn default_tasks_path() -> String {
+    "D:/Obsidian/00 Inbox/Tasks Inbox.md".to_string()
+}
+
+fn default_ideas_path() -> String {
+    "D:/Obsidian/00 Inbox/Ideas Inbox.md".to_string()
+}
+
+fn default_shopping_path() -> String {
+    "D:/Obsidian/00 Inbox/Shopping Inbox.md".to_string()
 }
 
 fn ensure_post_process_defaults(settings: &mut AppSettings) -> bool {
@@ -661,6 +870,51 @@ fn ensure_post_process_defaults(settings: &mut AppSettings) -> bool {
     changed
 }
 
+fn ensure_capture_defaults(settings: &mut AppSettings) -> bool {
+    let mut changed = false;
+
+    for profile in default_recognition_profiles() {
+        if !settings
+            .recognition_profiles
+            .iter()
+            .any(|existing| existing.id == profile.id)
+        {
+            settings.recognition_profiles.push(profile);
+            changed = true;
+        }
+    }
+
+    for action in default_capture_actions() {
+        if !settings
+            .capture_actions
+            .iter()
+            .any(|existing| existing.id == action.id)
+        {
+            settings.capture_actions.push(action);
+            changed = true;
+        }
+    }
+
+    if settings.notes_path.trim().is_empty() {
+        settings.notes_path = default_notes_path();
+        changed = true;
+    }
+    if settings.tasks_path.trim().is_empty() {
+        settings.tasks_path = default_tasks_path();
+        changed = true;
+    }
+    if settings.ideas_path.trim().is_empty() {
+        settings.ideas_path = default_ideas_path();
+        changed = true;
+    }
+    if settings.shopping_path.trim().is_empty() {
+        settings.shopping_path = default_shopping_path();
+        changed = true;
+    }
+
+    changed
+}
+
 pub const SETTINGS_STORE_PATH: &str = "settings_store.json";
 
 pub fn get_default_settings() -> AppSettings {
@@ -714,6 +968,74 @@ pub fn get_default_settings() -> AppSettings {
             current_binding: "escape".to_string(),
         },
     );
+    #[cfg(any(target_os = "windows", target_os = "linux"))]
+    let default_notes_shortcut = "ctrl+alt+n";
+    #[cfg(target_os = "macos")]
+    let default_notes_shortcut = "command+option+n";
+    #[cfg(not(any(target_os = "windows", target_os = "macos", target_os = "linux")))]
+    let default_notes_shortcut = "alt+n";
+
+    #[cfg(any(target_os = "windows", target_os = "linux"))]
+    let default_tasks_shortcut = "ctrl+alt+t";
+    #[cfg(target_os = "macos")]
+    let default_tasks_shortcut = "command+option+t";
+    #[cfg(not(any(target_os = "windows", target_os = "macos", target_os = "linux")))]
+    let default_tasks_shortcut = "alt+t";
+
+    #[cfg(any(target_os = "windows", target_os = "linux"))]
+    let default_ideas_shortcut = "ctrl+alt+i";
+    #[cfg(target_os = "macos")]
+    let default_ideas_shortcut = "command+option+i";
+    #[cfg(not(any(target_os = "windows", target_os = "macos", target_os = "linux")))]
+    let default_ideas_shortcut = "alt+i";
+
+    #[cfg(any(target_os = "windows", target_os = "linux"))]
+    let default_shopping_shortcut = "ctrl+alt+s";
+    #[cfg(target_os = "macos")]
+    let default_shopping_shortcut = "command+option+s";
+    #[cfg(not(any(target_os = "windows", target_os = "macos", target_os = "linux")))]
+    let default_shopping_shortcut = "alt+s";
+
+    bindings.insert(
+        "append_to_notes_file".to_string(),
+        ShortcutBinding {
+            id: "append_to_notes_file".to_string(),
+            name: "Append to Notes File".to_string(),
+            description: "Captures speech and appends it to the notes markdown file.".to_string(),
+            default_binding: default_notes_shortcut.to_string(),
+            current_binding: default_notes_shortcut.to_string(),
+        },
+    );
+    bindings.insert(
+        "append_to_tasks_file".to_string(),
+        ShortcutBinding {
+            id: "append_to_tasks_file".to_string(),
+            name: "Append to Tasks File".to_string(),
+            description: "Captures speech and appends it to the tasks markdown file.".to_string(),
+            default_binding: default_tasks_shortcut.to_string(),
+            current_binding: default_tasks_shortcut.to_string(),
+        },
+    );
+    bindings.insert(
+        "append_to_ideas_file".to_string(),
+        ShortcutBinding {
+            id: "append_to_ideas_file".to_string(),
+            name: "Append to Ideas File".to_string(),
+            description: "Captures speech and appends it to the ideas markdown file.".to_string(),
+            default_binding: default_ideas_shortcut.to_string(),
+            current_binding: default_ideas_shortcut.to_string(),
+        },
+    );
+    bindings.insert(
+        "append_to_shopping_file".to_string(),
+        ShortcutBinding {
+            id: "append_to_shopping_file".to_string(),
+            name: "Append to Shopping File".to_string(),
+            description: "Captures speech and appends it to the shopping markdown file.".to_string(),
+            default_binding: default_shopping_shortcut.to_string(),
+            current_binding: default_shopping_shortcut.to_string(),
+        },
+    );
 
     AppSettings {
         bindings,
@@ -762,6 +1084,12 @@ pub fn get_default_settings() -> AppSettings {
         custom_filler_words: None,
         whisper_accelerator: WhisperAcceleratorSetting::default(),
         ort_accelerator: OrtAcceleratorSetting::default(),
+        recognition_profiles: default_recognition_profiles(),
+        capture_actions: default_capture_actions(),
+        notes_path: default_notes_path(),
+        tasks_path: default_tasks_path(),
+        ideas_path: default_ideas_path(),
+        shopping_path: default_shopping_path(),
     }
 }
 
@@ -785,6 +1113,27 @@ impl AppSettings {
         self.post_process_providers
             .iter_mut()
             .find(|provider| provider.id == provider_id)
+    }
+
+    pub fn recognition_profile(&self, profile_id: &str) -> Option<&RecognitionProfile> {
+        self.recognition_profiles
+            .iter()
+            .find(|profile| profile.id == profile_id)
+    }
+
+    pub fn capture_action_for_binding(&self, binding_id: &str) -> Option<&CaptureAction> {
+        self.capture_actions
+            .iter()
+            .find(|action| action.enabled && action.binding_id == binding_id)
+    }
+
+    pub fn file_path_for_slot(&self, slot: CaptureFileSlot) -> &str {
+        match slot {
+            CaptureFileSlot::Notes => &self.notes_path,
+            CaptureFileSlot::Tasks => &self.tasks_path,
+            CaptureFileSlot::Ideas => &self.ideas_path,
+            CaptureFileSlot::Shopping => &self.shopping_path,
+        }
     }
 }
 
@@ -835,6 +1184,9 @@ pub fn load_or_create_app_settings(app: &AppHandle) -> AppSettings {
     if ensure_post_process_defaults(&mut settings) {
         store.set("settings", serde_json::to_value(&settings).unwrap());
     }
+    if ensure_capture_defaults(&mut settings) {
+        store.set("settings", serde_json::to_value(&settings).unwrap());
+    }
 
     settings
 }
@@ -857,6 +1209,9 @@ pub fn get_settings(app: &AppHandle) -> AppSettings {
     };
 
     if ensure_post_process_defaults(&mut settings) {
+        store.set("settings", serde_json::to_value(&settings).unwrap());
+    }
+    if ensure_capture_defaults(&mut settings) {
         store.set("settings", serde_json::to_value(&settings).unwrap());
     }
 
@@ -904,5 +1259,17 @@ mod tests {
         let settings = get_default_settings();
         assert!(!settings.auto_submit);
         assert_eq!(settings.auto_submit_key, AutoSubmitKey::Enter);
+    }
+
+    #[test]
+    fn default_settings_include_capture_actions_and_profiles() {
+        let settings = get_default_settings();
+        assert!(settings.capture_action_for_binding("transcribe").is_some());
+        assert!(settings
+            .capture_action_for_binding("append_to_notes_file")
+            .is_some());
+        assert!(settings.recognition_profile("ru_mixed").is_some());
+        assert_eq!(settings.notes_path, default_notes_path());
+        assert_eq!(settings.shopping_path, default_shopping_path());
     }
 }

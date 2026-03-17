@@ -57,7 +57,15 @@ impl TranscriptionManager {
         None
     }
 
-    pub fn transcribe(&self, _audio: Vec<f32>) -> Result<String> {
+    pub fn transcribe(&self, audio: Vec<f32>) -> Result<String> {
+        self.transcribe_with_language_hint(audio, None)
+    }
+
+    pub fn transcribe_with_language_hint(
+        &self,
+        _audio: Vec<f32>,
+        _language_hint: Option<String>,
+    ) -> Result<String> {
         Ok(String::new())
     }
 }

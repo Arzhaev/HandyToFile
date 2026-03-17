@@ -184,7 +184,7 @@ impl TranscriptionManager {
 
         {
             let mut engine = self.lock_engine();
-            // v0.3.0: no explicit unload — dropping the engine frees all resources
+            // v0.3.0: no explicit unload вЂ” dropping the engine frees all resources
             *engine = None;
         }
         {
@@ -445,6 +445,14 @@ impl TranscriptionManager {
     }
 
     pub fn transcribe(&self, audio: Vec<f32>) -> Result<String> {
+        self.transcribe_with_language_hint(audio, None)
+    }
+
+    pub fn transcribe_with_language_hint(
+        &self,
+        audio: Vec<f32>,
+        language_hint: Option<String>,
+    ) -> Result<String> {
         // Update last activity timestamp
         self.last_activity.store(
             SystemTime::now()
@@ -483,7 +491,8 @@ impl TranscriptionManager {
 
         // Validate selected language against the model's supported languages.
         // If the language isn't supported, fall back to "auto" to prevent errors.
-        let validated_language = if settings.selected_language == "auto" {
+        let requested_language = language_hint.unwrap_or_else(|| settings.selected_language.clone());
+        let validated_language = if requested_language == "auto" {
             "auto".to_string()
         } else {
             let is_supported = self
@@ -491,18 +500,16 @@ impl TranscriptionManager {
                 .get_model_info(&settings.selected_model)
                 .map(|info| {
                     info.supported_languages.is_empty()
-                        || info
-                            .supported_languages
-                            .contains(&settings.selected_language)
+                        || info.supported_languages.contains(&requested_language)
                 })
                 .unwrap_or(true);
 
             if is_supported {
-                settings.selected_language.clone()
+                requested_language.clone()
             } else {
                 warn!(
                     "Language '{}' not supported by current model, falling back to auto-detect",
-                    settings.selected_language
+                    requested_language
                 );
                 "auto".to_string()
             }
@@ -526,7 +533,7 @@ impl TranscriptionManager {
                 }
             };
 
-            // Release the lock before transcribing — no mutex held during the engine call
+            // Release the lock before transcribing вЂ” no mutex held during the engine call
             drop(engine_guard);
 
             let transcribe_result = catch_unwind(AssertUnwindSafe(
@@ -622,13 +629,13 @@ impl TranscriptionManager {
 
             match transcribe_result {
                 Ok(inner_result) => {
-                    // Success or normal error — put the engine back
+                    // Success or normal error вЂ” put the engine back
                     let mut engine_guard = self.lock_engine();
                     *engine_guard = Some(engine);
                     inner_result?
                 }
                 Err(panic_payload) => {
-                    // Engine panicked — do NOT put it back (it's in an unknown state).
+                    // Engine panicked вЂ” do NOT put it back (it's in an unknown state).
                     // The engine is dropped here, effectively unloading it.
                     let panic_msg = if let Some(s) = panic_payload.downcast_ref::<&str>() {
                         s.to_string()

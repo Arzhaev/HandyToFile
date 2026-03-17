@@ -1,4 +1,4 @@
-use crate::actions::ACTION_MAP;
+use crate::actions::{start_coordinated_action, stop_coordinated_action};
 use crate::managers::audio::AudioRecordingManager;
 use log::{debug, error, warn};
 use std::sync::mpsc::{self, Sender};
@@ -37,9 +37,6 @@ pub struct TranscriptionCoordinator {
     tx: Sender<Command>,
 }
 
-pub fn is_transcribe_binding(id: &str) -> bool {
-    id == "transcribe" || id == "transcribe_with_post_process"
-}
 
 impl TranscriptionCoordinator {
     pub fn new(app: AppHandle) -> Self {
@@ -94,7 +91,7 @@ impl TranscriptionCoordinator {
                         Command::Cancel {
                             recording_was_active,
                         } => {
-                            // Don't reset during processing — wait for the pipeline to finish.
+                            // Don't reset during processing вЂ” wait for the pipeline to finish.
                             if !matches!(stage, Stage::Processing)
                                 && (recording_was_active || matches!(stage, Stage::Recording(_)))
                             {
@@ -159,11 +156,7 @@ impl TranscriptionCoordinator {
 }
 
 fn start(app: &AppHandle, stage: &mut Stage, binding_id: &str, hotkey_string: &str) {
-    let Some(action) = ACTION_MAP.get(binding_id) else {
-        warn!("No action in ACTION_MAP for '{binding_id}'");
-        return;
-    };
-    action.start(app, binding_id, hotkey_string);
+    start_coordinated_action(app, binding_id, hotkey_string);
     if app
         .try_state::<Arc<AudioRecordingManager>>()
         .map_or(false, |a| a.is_recording())
@@ -175,10 +168,6 @@ fn start(app: &AppHandle, stage: &mut Stage, binding_id: &str, hotkey_string: &s
 }
 
 fn stop(app: &AppHandle, stage: &mut Stage, binding_id: &str, hotkey_string: &str) {
-    let Some(action) = ACTION_MAP.get(binding_id) else {
-        warn!("No action in ACTION_MAP for '{binding_id}'");
-        return;
-    };
-    action.stop(app, binding_id, hotkey_string);
+    stop_coordinated_action(app, binding_id, hotkey_string);
     *stage = Stage::Processing;
 }

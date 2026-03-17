@@ -1,4 +1,23 @@
-# Handy
+# HandyToFile
+
+> **Форк проекта [Handy](https://github.com/cjpais/Handy) (MIT, © CJ Pais).**
+> Добавлена запись расшифровок в Markdown-файлы, профили распознавания и горячие клавиши для захвата по категориям.
+
+**Документация форка:**
+
+- [README_HANDYTOFILE.md](README_HANDYTOFILE.md) — описание форка, горячие клавиши, профили
+- [SETUP_WINDOWS.md](SETUP_WINDOWS.md) — установка с нуля на Windows (Git, Rust, LLVM, Vulkan SDK)
+- [DEPLOYMENT_PLAN.md](DEPLOYMENT_PLAN.md) — план развёртывания
+- [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) — чеклист выпуска
+
+**Лицензии:**
+
+- Этот форк: [MIT License](LICENSE) (как и оригинал)
+- Оригинальный Handy: [MIT License](https://github.com/cjpais/Handy/blob/main/LICENSE), © 2025 CJ Pais
+- whisper.cpp: [MIT License](vendor/whisper-rs-sys/whisper.cpp/LICENSE), © The ggml authors
+- whisper-rs-sys: [Unlicense](vendor/whisper-rs-sys/LICENSE) (public domain)
+
+---
 
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/invite/WVBeWsNXK4)
 
@@ -402,12 +421,18 @@ The goal is to create both a useful tool and a foundation for others to build up
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License — see [LICENSE](LICENSE) file for details.
+
+This project is a fork of [Handy](https://github.com/cjpais/Handy) by CJ Pais (MIT).
+
+Bundled dependencies:
+- [whisper.cpp](https://github.com/ggerganov/whisper.cpp) — MIT License, © The ggml authors
+- [whisper-rs-sys](https://github.com/tazz4843/whisper-rs) — Unlicense (public domain)
 
 ## Acknowledgments
 
+- **CJ Pais** for the original [Handy](https://github.com/cjpais/Handy) project
 - **Whisper** by OpenAI for the speech recognition model
 - **whisper.cpp and ggml** for amazing cross-platform whisper inference/acceleration
 - **Silero** for great lightweight VAD
 - **Tauri** team for the excellent Rust-based app framework
-- **Community contributors** helping make Handy better
