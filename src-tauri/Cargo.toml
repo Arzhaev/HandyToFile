@@ -1,8 +1,8 @@
 [package]
 name = "handy"
 version = "0.7.10"
-description = "Handy"
-authors = ["cjpais"]
+description = "HandyToFile — fork of Handy with Markdown file capture"
+authors = ["cjpais", "YOUR_GITHUB_USERNAME"]
 edition = "2021"
 license = "MIT"
 default-run = "handy"

@@ -207,59 +207,36 @@ HandyToFile — локальный десктопный форк [Handy](https:/
 - Visual Studio C++ build tools
 - Node.js LTS
 - WebView2 Runtime
-- LLVM с `libclang.dll`
 - Vulkan SDK
 - Git
 
-Переменные окружения, обычно необходимые на Windows:
+> **LLVM не нужен.** На Windows биндинги для whisper уже сгенерированы заранее — libclang не требуется.
+
+Переменная окружения, необходимая во время сборки:
 
 ```powershell
-$env:LIBCLANG_PATH = 'C:\Program Files\LLVM\bin'
 $env:VULKAN_SDK = 'C:\VulkanSDK\1.4.341.1'
 ```
+
+Подробная инструкция с нуля: [SETUP_WINDOWS.md](SETUP_WINDOWS.md)
 
 ## Команды разработки
 
-Установка фронтенд-зависимостей:
-
 ```powershell
-cd C:\projects\HandyToFile
-& 'C:\Program Files\nodejs\npm.cmd' install --ignore-scripts
-```
+# Установка зависимостей
+npm install --ignore-scripts
 
-Продакшн-сборка фронтенда:
+# Запуск в режиме разработки (устанавливает VULKAN_SDK автоматически)
+powershell -ExecutionPolicy Bypass -File run-dev.ps1
 
-```powershell
-cd C:\projects\HandyToFile
-& 'C:\Program Files\nodejs\npm.cmd' run build
-```
-
-Проверки бэкенда:
-
-```powershell
-cd C:\projects\HandyToFile\src-tauri
-$env:LIBCLANG_PATH = 'C:\Program Files\LLVM\bin'
+# Проверка бэкенда
 $env:VULKAN_SDK = 'C:\VulkanSDK\1.4.341.1'
 cargo check
 cargo test
-```
 
-Запуск десктопного приложения в режиме разработки:
-
-```powershell
-cd C:\projects\HandyToFile
-$env:LIBCLANG_PATH = 'C:\Program Files\LLVM\bin'
+# Сборка релизного пакета
 $env:VULKAN_SDK = 'C:\VulkanSDK\1.4.341.1'
-& 'C:\Program Files\nodejs\npm.cmd' run tauri dev
-```
-
-Сборка релизного пакета:
-
-```powershell
-cd C:\projects\HandyToFile
-$env:LIBCLANG_PATH = 'C:\Program Files\LLVM\bin'
-$env:VULKAN_SDK = 'C:\VulkanSDK\1.4.341.1'
-& 'C:\Program Files\nodejs\npm.cmd' run tauri build
+npm run tauri build
 ```
 
 ## Текущий статус локальной сборки

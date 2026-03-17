@@ -60,10 +60,10 @@ powershell -ExecutionPolicy Bypass -File run-dev.ps1
 
 По умолчанию:
 ```
-D:/Obsidian/00 Inbox/Voice Notes.md   (заметки)
-D:/Obsidian/00 Inbox/Tasks.md         (задачи)
-D:/Obsidian/00 Inbox/Ideas.md         (идеи)
-D:/Obsidian/00 Inbox/Shopping.md      (покупки)
+D:/Obsidian/00 Inbox/Voice Notes.md     (заметки)
+D:/Obsidian/00 Inbox/Tasks Inbox.md     (задачи)
+D:/Obsidian/00 Inbox/Ideas Inbox.md     (идеи)
+D:/Obsidian/00 Inbox/Shopping Inbox.md  (покупки)
 ```
 
 ---
@@ -75,8 +75,7 @@ D:/Obsidian/00 Inbox/Shopping.md      (покупки)
 powershell -ExecutionPolicy Bypass -File run-dev.ps1
 
 # Или вручную
-$env:LIBCLANG_PATH = 'C:\Program Files\LLVM\bin'
-$env:VULKAN_SDK    = 'C:\VulkanSDK\1.4.341.1'
+$env:VULKAN_SDK = 'C:\VulkanSDK\1.4.341.1'
 npm run tauri dev
 ```
 
