@@ -1,6 +1,6 @@
 # HandyToFile — установка с нуля на Windows
 
-Это пошаговая инструкция для запуска проекта на чистой машине Windows.
+Пошаговая инструкция для запуска проекта на чистой машине Windows.
 Предполагается, что ничего из инструментов разработки ещё не установлено.
 
 ---
@@ -11,11 +11,12 @@
 |---|---|
 | Git | клонирование репозитория |
 | Rust + rustup | компиляция бэкенда |
-| Visual Studio C++ Build Tools | компилятор C/C++, нужен для сборки Rust-крейтов |
+| Visual Studio C++ Build Tools | компилятор C/C++, нужен для сборки Rust-крейтов и whisper.cpp |
 | Node.js LTS | сборка фронтенда |
-| LLVM | библиотека `libclang.dll`, нужна для bindgen |
 | Vulkan SDK | GPU-ускорение для Whisper |
 | WebView2 Runtime | встроенный браузер Tauri (обычно уже есть на Windows 10/11) |
+
+> **LLVM не нужен.** На Windows биндинги для whisper уже сгенерированы заранее — libclang не требуется.
 
 ---
 
@@ -73,24 +74,7 @@ npm --version
 
 ---
 
-## Шаг 5 — LLVM
-
-Скачать последний релиз `LLVM-*-win64.exe`: https://github.com/llvm/llvm-project/releases
-
-Искать файл вида `LLVM-19.x.x-win64.exe` (или новее).
-
-При установке **обязательно** отметить: **"Add LLVM to the system PATH"** → "For all users".
-
-Проверить:
-
-```powershell
-Test-Path 'C:\Program Files\LLVM\bin\libclang.dll'
-# должно вернуть True
-```
-
----
-
-## Шаг 6 — Vulkan SDK
+## Шаг 5 — Vulkan SDK
 
 Скачать: https://vulkan.lunarg.com/sdk/home#windows
 
@@ -107,15 +91,15 @@ ls 'C:\VulkanSDK\'
 
 ---
 
-## Шаг 7 — Клонировать репозиторий
+## Шаг 6 — Клонировать репозиторий
 
 ```powershell
-git clone https://github.com/<your-fork>/HandyToFile.git C:\projects\HandyToFile
+git clone https://github.com/<your-username>/HandyToFile.git C:\projects\HandyToFile
 ```
 
 ---
 
-## Шаг 8 — Установить зависимости фронтенда
+## Шаг 7 — Установить зависимости фронтенда
 
 ```powershell
 cd C:\projects\HandyToFile
@@ -124,12 +108,11 @@ npm install --ignore-scripts
 
 ---
 
-## Шаг 9 — Проверить сборку бэкенда
+## Шаг 8 — Проверить сборку бэкенда
 
 ```powershell
 cd C:\projects\HandyToFile\src-tauri
-$env:LIBCLANG_PATH = 'C:\Program Files\LLVM\bin'
-$env:VULKAN_SDK    = (Get-Item 'C:\VulkanSDK\*' | Sort-Object Name -Descending | Select-Object -First 1).FullName
+$env:VULKAN_SDK = (Get-Item 'C:\VulkanSDK\*' | Sort-Object Name -Descending | Select-Object -First 1).FullName
 cargo check
 ```
 
@@ -138,7 +121,7 @@ cargo check
 
 ---
 
-## Шаг 10 — Запустить приложение
+## Шаг 9 — Запустить приложение
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File C:\projects\HandyToFile\run-dev.ps1
@@ -148,8 +131,7 @@ powershell -ExecutionPolicy Bypass -File C:\projects\HandyToFile\run-dev.ps1
 
 ```powershell
 cd C:\projects\HandyToFile
-$env:LIBCLANG_PATH = 'C:\Program Files\LLVM\bin'
-$env:VULKAN_SDK    = (Get-Item 'C:\VulkanSDK\*' | Sort-Object Name -Descending | Select-Object -First 1).FullName
+$env:VULKAN_SDK = (Get-Item 'C:\VulkanSDK\*' | Sort-Object Name -Descending | Select-Object -First 1).FullName
 npm run tauri dev
 ```
 
@@ -158,7 +140,7 @@ npm run tauri dev
 
 ---
 
-## Шаг 11 — Скачать модель распознавания речи
+## Шаг 10 — Скачать модель распознавания речи
 
 При первом запуске приложение откроется на экране онбординга.
 Если автоматическое скачивание не работает (Windows Firewall или прокси) — скачать вручную:
@@ -177,17 +159,16 @@ npm run tauri dev
 
 ---
 
-## Переменные окружения
+## Переменная окружения
 
-Переменные `LIBCLANG_PATH` и `VULKAN_SDK` нужны **только во время сборки**. Для обычной работы приложения они не нужны.
+Переменная `VULKAN_SDK` нужна **только во время сборки**. Для обычной работы приложения она не нужна.
 
-Чтобы не устанавливать их вручную каждый раз — уже есть готовый скрипт `run-dev.ps1` в корне репозитория.
+Чтобы не устанавливать её вручную каждый раз — уже есть готовый скрипт `run-dev.ps1` в корне репозитория.
 
-Или добавить их постоянно через System Properties → Environment Variables:
+Или добавить постоянно через System Properties → Environment Variables:
 
 | Переменная | Значение |
 |---|---|
-| `LIBCLANG_PATH` | `C:\Program Files\LLVM\bin` |
 | `VULKAN_SDK` | `C:\VulkanSDK\1.4.341.1` (подставить свою версию) |
 
 ---
@@ -197,20 +178,16 @@ npm run tauri dev
 ### `error: could not find Cargo.toml`
 Запускаете команду не из папки проекта. Сначала `cd C:\projects\HandyToFile`.
 
-### `"bun" не является внутренней командой`
-В `src-tauri/tauri.conf.json` прописан `bun`, но используется npm.
-В этом форке уже исправлено — проверьте что в `tauri.conf.json` стоит `npm run dev`.
-
 ### Модели не скачиваются из приложения
 Windows Firewall может блокировать исходящие соединения для `handy.exe`.
-Решение: разрешить в фаерволе или скачать модели вручную (см. Шаг 11).
+Решение: разрешить в фаерволе или скачать модели вручную (см. Шаг 10).
 
-### `libclang.dll not found`
-Переменная `LIBCLANG_PATH` не установлена или путь неверный.
-Проверить: `Test-Path 'C:\Program Files\LLVM\bin\libclang.dll'`.
-
-### Сборка зависает на Vulkan-компоненте
-`VULKAN_SDK` не установлена. Убедиться что Vulkan SDK установлен и путь корректный.
+### Сборка зависает или падает на whisper.cpp
+`VULKAN_SDK` не установлена. Убедиться что Vulkan SDK установлен и путь корректный:
+```powershell
+echo $env:VULKAN_SDK
+ls "$env:VULKAN_SDK\Lib\vulkan-1.lib"
+```
 
 ---
 
@@ -220,7 +197,6 @@ Windows Firewall может блокировать исходящие соеди
 - [ ] Rust установлен, `cargo --version` работает
 - [ ] Visual Studio C++ Build Tools установлены
 - [ ] Node.js установлен, `npm --version` работает
-- [ ] LLVM установлен, `libclang.dll` доступна
 - [ ] Vulkan SDK установлен
 - [ ] `npm install --ignore-scripts` выполнен
 - [ ] `cargo check` проходит без ошибок
