@@ -189,6 +189,13 @@
       "pushToTalk": {
         "label": "Push To Talk",
         "description": "Hold to record, release to stop"
+      },
+      "recognitionProfile": {
+        "title": "Recognition Profile",
+        "description": "Recognition language for all capture actions. The instruction prompt is only applied when an LLM is configured (Ctrl+Shift+Space).",
+        "mixed": "Mixed",
+        "saved": "Profile set to {{name}}",
+        "saveError": "Failed to set recognition profile"
       }
     },
     "models": {

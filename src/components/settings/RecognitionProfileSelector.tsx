@@ -43,19 +43,10 @@ export const RecognitionProfileSelector: React.FC<
       await invoke("set_recognition_profile", { profileId: value });
       await refreshSettings();
       const label = options.find((o) => o.value === value)?.label ?? value;
-      toast.success(
-        t("settings.general.recognitionProfile.saved", {
-          defaultValue: "Profile set to {{name}}",
-          name: label,
-        }),
-      );
+      toast.success(t("settings.general.recognitionProfile.saved", { name: label }));
     } catch (error) {
       console.error("Failed to set recognition profile:", error);
-      toast.error(
-        t("settings.general.recognitionProfile.saveError", {
-          defaultValue: "Failed to set recognition profile",
-        }),
-      );
+      toast.error(t("settings.general.recognitionProfile.saveError"));
     } finally {
       setIsSaving(false);
     }
@@ -65,13 +56,8 @@ export const RecognitionProfileSelector: React.FC<
 
   return (
     <SettingContainer
-      title={t("settings.general.recognitionProfile.title", {
-        defaultValue: "Recognition Profile",
-      })}
-      description={t("settings.general.recognitionProfile.description", {
-        defaultValue:
-          "Language and processing style applied to all capture actions.",
-      })}
+      title={t("settings.general.recognitionProfile.title")}
+      description={t("settings.general.recognitionProfile.description")}
       descriptionMode={descriptionMode}
       grouped={grouped}
     >
@@ -83,9 +69,7 @@ export const RecognitionProfileSelector: React.FC<
         placeholder={
           allSame
             ? undefined
-            : t("settings.general.recognitionProfile.mixed", {
-                defaultValue: "Mixed",
-              })
+            : t("settings.general.recognitionProfile.mixed")
         }
         onChange={handleChange}
         className="w-44"
