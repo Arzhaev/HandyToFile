@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,6 +32,11 @@ jobs:
         with:
           workspaces: "./src-tauri -> target"
 
+      - name: Install LLVM (for bindgen)
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: "18"
+
       - name: Install Vulkan SDK
         uses: humbletim/install-vulkan-sdk@v1.2
         with:
@@ -43,8 +50,23 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LIBCLANG_PATH: ${{ env.LLVM_PATH }}\bin
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: ${{ github.ref_name }}
+          releaseName: "HandyToFile ${{ github.ref_name }}"
+          releaseBody: |
+            ## HandyToFile ${{ github.ref_name }}
+
+            ### Установка
+            Скачайте и запустите файл `HandyToFile_*_x64-setup.exe`.
+
+            При первом запуске откройте Settings → Models и скачайте модель распознавания речи.
+
+            ### Горячие клавиши
+            - `Ctrl+Space` — транскрипция → вставить в курсор
+            - `Ctrl+Alt+N/T/I/S` — записать в файл (заметки/задачи/идеи/покупки)
+            - `Escape` — отмена
+
+            Подробнее: [README](https://github.com/Arzhaev/HandyToFile#readme)
           releaseDraft: true
           prerelease: false
