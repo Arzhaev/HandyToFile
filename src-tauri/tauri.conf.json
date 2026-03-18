@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Handy",
+  "productName": "HandyToFile",
   "version": "0.7.10",
   "identifier": "com.pais.handy",
   "build": {
