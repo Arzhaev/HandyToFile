@@ -490,28 +490,28 @@
       "title": "Acerca de",
       "version": {
         "title": "Versión",
-        "description": "Versión actual de Handy"
+        "description": "Versión actual de HandyToFile"
       },
       "appDataDirectory": {
         "title": "Directorio de Datos de la Aplicación",
-        "description": "Ubicación donde Handy almacena sus datos"
+        "description": "Ubicación donde HandyToFile almacena sus datos"
       },
       "sourceCode": {
         "title": "Código Fuente",
-        "description": "Ver código fuente y contribuir",
+        "description": "Ver el código fuente de HandyToFile en GitHub",
         "button": "Ver en GitHub"
-      },
-      "supportDevelopment": {
-        "title": "Apoyar el Desarrollo",
-        "description": "Ayúdanos a continuar construyendo Handy",
-        "button": "Donar"
       },
       "acknowledgments": {
         "title": "Reconocimientos",
+        "handy": {
+          "title": "Handy, por CJ Pais",
+          "description": "HandyToFile es un fork de Handy, una aplicación de escritorio multiplataforma de voz a texto. Licencia MIT.",
+          "button": "Repositorio original"
+        },
         "whisper": {
           "title": "Whisper.cpp",
           "description": "Inferencia de alto rendimiento del modelo de reconocimiento automático de voz Whisper de OpenAI",
-          "details": "Handy usa Whisper.cpp para procesamiento de voz a texto rápido y local. Gracias al increíble trabajo de Georgi Gerganov y colaboradores."
+          "details": "HandyToFile usa Whisper.cpp para procesamiento de voz a texto rápido y local. Gracias al increíble trabajo de Georgi Gerganov y colaboradores."
         }
       }
     }

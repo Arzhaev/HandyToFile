@@ -490,28 +490,28 @@
       "title": "О программе",
       "version": {
         "title": "Версия",
-        "description": "Текущая версия Handy"
+        "description": "Текущая версия HandyToFile"
       },
       "appDataDirectory": {
         "title": "Каталог данных приложения",
-        "description": "Место, где Handy хранит свои данные"
+        "description": "Место, где HandyToFile хранит свои данные"
       },
       "sourceCode": {
         "title": "Исходный код",
-        "description": "Просмотреть исходный код и внести свой вклад",
+        "description": "Исходный код HandyToFile на GitHub",
         "button": "Посмотреть на GitHub"
-      },
-      "supportDevelopment": {
-        "title": "Поддержка развития",
-        "description": "Помогите нам продолжать развитие Handy",
-        "button": "Поддержать"
       },
       "acknowledgments": {
         "title": "Благодарности",
+        "handy": {
+          "title": "Handy, автор CJ Pais",
+          "description": "HandyToFile — форк Handy, кроссплатформенного приложения для распознавания речи. Лицензия MIT.",
+          "button": "Оригинальный репозиторий"
+        },
         "whisper": {
           "title": "Whisper.cpp",
           "description": "Высокопроизводительная модель автоматического распознавания речи OpenAI Whisper",
-          "details": "Handy использует Whisper.cpp для быстрого локального преобразования речи в текст. Спасибо великолепной работе Георгия Герганова и участников."
+          "details": "HandyToFile использует Whisper.cpp для быстрого локального преобразования речи в текст. Спасибо великолепной работе Георгия Герганова и участников."
         }
       }
     }

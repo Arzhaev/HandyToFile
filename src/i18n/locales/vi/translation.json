@@ -490,28 +490,28 @@
       "title": "Giới thiệu",
       "version": {
         "title": "Phiên bản",
-        "description": "Phiên bản hiện tại của Handy"
+        "description": "Phiên bản hiện tại của HandyToFile"
       },
       "appDataDirectory": {
         "title": "Thư mục dữ liệu ứng dụng",
-        "description": "Vị trí Handy lưu trữ dữ liệu"
+        "description": "Vị trí HandyToFile lưu trữ dữ liệu"
       },
       "sourceCode": {
         "title": "Mã nguồn",
-        "description": "Xem mã nguồn và đóng góp",
+        "description": "Xem mã nguồn HandyToFile trên GitHub",
         "button": "Xem trên GitHub"
-      },
-      "supportDevelopment": {
-        "title": "Hỗ trợ phát triển",
-        "description": "Giúp chúng tôi tiếp tục xây dựng Handy",
-        "button": "Quyên góp"
       },
       "acknowledgments": {
         "title": "Lời cảm ơn",
+        "handy": {
+          "title": "Handy, tác giả CJ Pais",
+          "description": "HandyToFile là một fork của Handy — ứng dụng chuyển giọng nói thành văn bản đa nền tảng. Giấy phép MIT.",
+          "button": "Kho lưu trữ gốc"
+        },
         "whisper": {
           "title": "Whisper.cpp",
           "description": "Suy luận hiệu suất cao của mô hình nhận dạng giọng nói tự động Whisper của OpenAI",
-          "details": "Handy sử dụng Whisper.cpp để xử lý chuyển đổi giọng nói thành văn bản nhanh, cục bộ. Cảm ơn công việc tuyệt vời của Georgi Gerganov và các cộng tác viên."
+          "details": "HandyToFile sử dụng Whisper.cpp để xử lý chuyển đổi giọng nói thành văn bản nhanh, cục bộ. Cảm ơn công việc tuyệt vời của Georgi Gerganov và các cộng tác viên."
         }
       }
     }
