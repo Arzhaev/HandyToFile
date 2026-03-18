@@ -763,6 +763,24 @@ pub fn change_shopping_path_setting(app: AppHandle, path: String) -> Result<(), 
 
 #[tauri::command]
 #[specta::specta]
+pub fn set_recognition_profile(app: AppHandle, profile_id: String) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    let valid = settings
+        .recognition_profiles
+        .iter()
+        .any(|p| p.id == profile_id);
+    if !valid {
+        return Err(format!("Unknown profile '{}'", profile_id));
+    }
+    for action in settings.capture_actions.iter_mut() {
+        action.profile_id = profile_id.clone();
+    }
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
 pub fn change_clipboard_handling_setting(app: AppHandle, handling: String) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
     let parsed = match handling.as_str() {

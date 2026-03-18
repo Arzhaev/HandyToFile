@@ -11,6 +11,7 @@ import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
 import { ModelSettingsCard } from "./ModelSettingsCard";
 import { CaptureFilePaths } from "../CaptureFilePaths";
+import { RecognitionProfileSelector } from "../RecognitionProfileSelector";
 
 export const GeneralSettings: React.FC = () => {
   const { t } = useTranslation();
@@ -24,6 +25,7 @@ export const GeneralSettings: React.FC = () => {
         <ShortcutInput shortcutId="append_to_ideas_file" grouped={true} />
         <ShortcutInput shortcutId="append_to_shopping_file" grouped={true} />
         <PushToTalk descriptionMode="tooltip" grouped={true} />
+        <RecognitionProfileSelector descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
       <SettingsGroup
         title={t("settings.general.capturePaths.title", {
