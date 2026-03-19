@@ -216,6 +216,27 @@
         "mixed": "Mixed",
         "saved": "Profile set to {{name}}",
         "saveError": "Failed to set recognition profile"
+      },
+      "capturePaths": {
+        "title": "Capture Destinations",
+        "saved": "Path saved",
+        "saveError": "Failed to save path",
+        "notes_path": {
+          "title": "Notes file",
+          "description": "Markdown file used by the quick note capture action."
+        },
+        "tasks_path": {
+          "title": "Tasks file",
+          "description": "Markdown file used by the quick task capture action."
+        },
+        "ideas_path": {
+          "title": "Ideas file",
+          "description": "Markdown file used by the quick idea capture action."
+        },
+        "shopping_path": {
+          "title": "Shopping file",
+          "description": "Markdown file used by the quick shopping capture action."
+        }
       }
     },
     "models": {

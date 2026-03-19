@@ -242,6 +242,27 @@
         "saveError": "Не удалось изменить профиль"
       }
     },
+    "capturePaths": {
+      "title": "Куда сохранять",
+      "saved": "Путь сохранён",
+      "saveError": "Не удалось сохранить путь",
+      "notes_path": {
+        "title": "Файл заметок",
+        "description": "Markdown-файл для быстрой записи заметок"
+      },
+      "tasks_path": {
+        "title": "Файл задач",
+        "description": "Markdown-файл для быстрой записи задач"
+      },
+      "ideas_path": {
+        "title": "Файл идей",
+        "description": "Markdown-файл для быстрой записи идей"
+      },
+      "shopping_path": {
+        "title": "Файл покупок",
+        "description": "Markdown-файл для быстрой записи покупок"
+      }
+    },
     "sound": {
       "title": "Звук",
       "microphone": {
@@ -565,25 +586,25 @@
   },
   "common": {
     "loading": "Загрузка...",
-    "save": "Сохранять",
+    "save": "Сохранить",
     "cancel": "Отмена",
-    "reset": "Перезагрузить",
-    "add": "Добавлять",
-    "remove": "Удалять",
+    "reset": "Сбросить",
+    "add": "Добавить",
+    "remove": "Удалить",
     "delete": "Удалить",
-    "edit": "Редактировать",
-    "create": "Создавать",
-    "update": "Обновлять",
-    "close": "Закрывать",
+    "edit": "Изменить",
+    "create": "Создать",
+    "update": "Обновить",
+    "close": "Закрыть",
     "open": "Открыть",
     "default": "По умолчанию",
     "enabled": "Включено",
-    "disabled": "Неполноценный",
-    "on": "На",
-    "off": "Выключенный",
+    "disabled": "Отключено",
+    "on": "Вкл.",
+    "off": "Выкл.",
     "yes": "Да",
     "no": "Нет",
-    "noOptionsFound": "Вариантов не найдено"
+    "noOptionsFound": "Ничего не найдено"
   },
   "accessibility": {
     "permissionsRequired": "Требуются разрешения на доступ",
