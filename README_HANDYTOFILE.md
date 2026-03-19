@@ -84,7 +84,8 @@ HandyToFile — локальный десктопный форк [Handy](https:/
 ### Windows / Linux
 
 - `Ctrl+Space` — вставить в активное окно
-- `Ctrl+Shift+Space` — режим вставки с постобработкой (legacy)
+- `Ctrl+Shift+Enter` — вставить и отправить (нажать Enter после вставки)
+- `Ctrl+Shift+Space` — вставка с постобработкой через LLM
 - `Ctrl+Alt+N` — дозапись в файл заметок
 - `Ctrl+Alt+T` — дозапись в файл задач
 - `Ctrl+Alt+I` — дозапись в файл идей
@@ -94,7 +95,8 @@ HandyToFile — локальный десктопный форк [Handy](https:/
 ### macOS
 
 - `Option+Space` — вставить в активное окно
-- `Option+Shift+Space` — режим вставки с постобработкой (legacy)
+- `Option+Shift+Return` — вставить и отправить (нажать Enter после вставки)
+- `Option+Shift+Space` — вставка с постобработкой через LLM
 - `Command+Option+N` — дозапись в файл заметок
 - `Command+Option+T` — дозапись в файл задач
 - `Command+Option+I` — дозапись в файл идей
@@ -180,15 +182,23 @@ HandyToFile — локальный десктопный форк [Handy](https:/
       "binding_id": "transcribe",
       "profile_id": "ru_mixed",
       "enabled": true,
-      "output_target": {
-        "type": "paste"
-      }
+      "auto_submit": false,
+      "output_target": { "type": "paste" }
+    },
+    {
+      "id": "default_paste_and_send_ru",
+      "binding_id": "transcribe_and_send",
+      "profile_id": "ru_mixed",
+      "enabled": true,
+      "auto_submit": true,
+      "output_target": { "type": "paste" }
     },
     {
       "id": "quick_note_ru",
       "binding_id": "append_to_notes_file",
       "profile_id": "ru_mixed",
       "enabled": true,
+      "auto_submit": false,
       "output_target": {
         "type": "append_file",
         "file_slot": "notes",

@@ -43,6 +43,7 @@ powershell -ExecutionPolicy Bypass -File run-dev.ps1
 | Действие | Клавиши | Описание |
 |---|---|---|
 | Записать → вставить в курсор | `Ctrl+Space` | Основной режим. Текст вставляется в активное поле |
+| Записать → вставить и отправить | `Ctrl+Shift+Enter` | Вставить текст и нажать Enter (удобно для чатов) |
 | Записать → постобработка | `Ctrl+Shift+Space` | Транскрипция с дополнительной обработкой через LLM |
 | Записать → файл заметок | `Ctrl+Alt+N` | Дозапись в Markdown: `- YYYY-MM-DD HH:mm — текст` |
 | Записать → файл задач | `Ctrl+Alt+T` | Дозапись в Markdown: `- [ ] YYYY-MM-DD HH:mm — текст` |
@@ -55,6 +56,7 @@ powershell -ExecutionPolicy Bypass -File run-dev.ps1
 | Действие | Клавиши |
 |---|---|
 | Записать → вставить в курсор | `Option+Space` |
+| Записать → вставить и отправить | `Option+Shift+Return` |
 | Записать → постобработка | `Option+Shift+Space` |
 | Записать → файл заметок | `Cmd+Option+N` |
 | Записать → файл задач | `Cmd+Option+T` |
