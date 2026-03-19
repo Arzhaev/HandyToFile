@@ -26,16 +26,16 @@
 <td><b>Модели</b><br>Управление моделями, ручная установка</td>
 </tr>
 <tr>
-<td><img src="Docs/screenshoots/general.png" width="340"/></td>
-<td><img src="Docs/screenshoots/models.png" width="340"/></td>
+<td><img src="docs/screenshoots/general.png" width="340"/></td>
+<td><img src="docs/screenshoots/models.png" width="340"/></td>
 </tr>
 <tr>
 <td><b>Продвинутые настройки</b><br>Ускорение Whisper/ONNX, постобработка, история</td>
 <td><b>О программе</b><br>Версия, каталоги данных, благодарности</td>
 </tr>
 <tr>
-<td><img src="Docs/screenshoots/advanced.png" width="340"/></td>
-<td><img src="Docs/screenshoots/about.png" width="340"/></td>
+<td><img src="docs/screenshoots/advanced.png" width="340"/></td>
+<td><img src="docs/screenshoots/about.png" width="340"/></td>
 </tr>
 </table>
 
@@ -173,13 +173,40 @@ C:/Users/<user>/Documents/HandyToFile/shopping.md  (покупки)
 
 ## Разработка
 
+### Windows
+
 ```powershell
-# Запуск в режиме разработки (Windows)
+# Запуск в режиме разработки
 powershell -ExecutionPolicy Bypass -File run-dev.ps1
 
-# Или вручную
-$env:VULKAN_SDK = 'C:\VulkanSDK\1.4.341.1'
-npm run tauri dev
+# Сборка релизного пакета
+powershell -ExecutionPolicy Bypass -File build-release.ps1
+```
+
+Подробная инструкция с нуля: [SETUP_WINDOWS.md](SETUP_WINDOWS.md)
+
+### macOS
+
+Готовых бинарников под macOS пока нет — собрать можно самостоятельно из исходников:
+
+**Требования:** [Rust](https://rustup.rs/), [Bun](https://bun.sh/), Xcode Command Line Tools
+
+```bash
+git clone https://github.com/Arzhaev/HandyToFile.git
+cd HandyToFile
+
+# Скачать модель VAD (обязательно)
+mkdir -p src-tauri/resources/models
+curl -o src-tauri/resources/models/silero_vad_v4.onnx https://blob.handy.computer/silero_vad_v4.onnx
+
+# Установить зависимости
+bun install
+
+# Запуск в режиме разработки
+bun run tauri dev
+
+# Сборка релизного пакета (.dmg)
+bun run tauri build
 ```
 
 Подробности: [DEPLOYMENT_PLAN.md](DEPLOYMENT_PLAN.md) · [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md)
