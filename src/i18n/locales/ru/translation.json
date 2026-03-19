@@ -165,7 +165,13 @@
       },
       "noModelsMatch": "Нет моделей, соответствующих этому фильтру.",
       "yourModels": "Загруженные модели",
-      "availableModels": "Доступны для загрузки"
+      "availableModels": "Доступны для загрузки",
+      "manualInstall": {
+        "title": "Ручная установка",
+        "path": "Папка: %APPDATA%\\com.pais.handy\\models\\",
+        "format": "Формат: .gguf (Whisper) или .bin (Parakeet)",
+        "learnMore": "Подробнее в README"
+      }
     },
     "general": {
       "title": "Общие",
@@ -192,6 +198,22 @@
           "transcribe_and_send": {
             "name": "Записать и отправить",
             "description": "Записать голос, вставить текст и нажать Enter в активном окне."
+          },
+          "append_to_notes_file": {
+            "name": "Записать в файл заметок",
+            "description": "Дозаписать расшифровку в Markdown-файл заметок."
+          },
+          "append_to_tasks_file": {
+            "name": "Записать в файл задач",
+            "description": "Дозаписать расшифровку в Markdown-файл задач."
+          },
+          "append_to_ideas_file": {
+            "name": "Записать в файл идей",
+            "description": "Дозаписать расшифровку в Markdown-файл идей."
+          },
+          "append_to_shopping_file": {
+            "name": "Записать в список покупок",
+            "description": "Дозаписать расшифровку в Markdown-файл списка покупок."
           }
         },
         "errors": {

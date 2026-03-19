@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ask } from "@tauri-apps/plugin-dialog";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import { ChevronDown, Globe } from "lucide-react";
 import type { ModelCardStatus } from "@/components/onboarding";
 import { ModelCard } from "@/components/onboarding";
@@ -210,6 +211,17 @@ export const ModelsSettings: React.FC = () => {
         <p className="text-sm text-text/60">
           {t("settings.models.description")}
         </p>
+        <div className="mt-3 p-3 rounded-lg bg-mid-gray/10 border border-mid-gray/20 text-xs text-text/60 space-y-1">
+          <p className="font-medium text-text/80">{t("settings.models.manualInstall.title")}</p>
+          <p>{t("settings.models.manualInstall.path")}</p>
+          <p>{t("settings.models.manualInstall.format")}</p>
+          <button
+            className="text-logo-primary hover:underline cursor-pointer"
+            onClick={() => openUrl("https://github.com/Arzhaev/HandyToFile#модели-распознавания-речи")}
+          >
+            {t("settings.models.manualInstall.learnMore")}
+          </button>
+        </div>
       </div>
       {filteredModels.length > 0 ? (
         <div className="space-y-6">

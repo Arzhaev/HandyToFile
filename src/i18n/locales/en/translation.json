@@ -174,6 +174,22 @@
           "transcribe_and_send": {
             "name": "Transcribe and Send",
             "description": "Record speech, paste the text and press Enter in the active window."
+          },
+          "append_to_notes_file": {
+            "name": "Append to Notes File",
+            "description": "Append transcription as a bullet entry to the notes Markdown file."
+          },
+          "append_to_tasks_file": {
+            "name": "Append to Tasks File",
+            "description": "Append transcription as a checkbox entry to the tasks Markdown file."
+          },
+          "append_to_ideas_file": {
+            "name": "Append to Ideas File",
+            "description": "Append transcription as a heading entry to the ideas Markdown file."
+          },
+          "append_to_shopping_file": {
+            "name": "Append to Shopping List",
+            "description": "Append transcription as a checkbox entry to the shopping Markdown file."
           }
         },
         "errors": {
@@ -207,6 +223,12 @@
       "description": "Select a transcription model or download additional models. Different models offer varying levels of accuracy and speed.",
       "yourModels": "Downloaded Models",
       "availableModels": "Available to Download",
+      "manualInstall": {
+        "title": "Manual installation",
+        "path": "Folder: %APPDATA%\\com.pais.handy\\models\\",
+        "format": "Format: .gguf (Whisper) or .bin (Parakeet)",
+        "learnMore": "See README for details"
+      },
       "downloaded": "Downloaded",
       "available": "Available to Download",
       "deleteConfirm": "Are you sure you want to delete {{modelName}}? You will need to download it again to use it.",
