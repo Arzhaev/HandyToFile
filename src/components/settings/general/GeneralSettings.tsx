@@ -21,6 +21,7 @@ export const GeneralSettings: React.FC = () => {
     <div className="max-w-3xl w-full mx-auto space-y-6">
       <SettingsGroup title={t("settings.general.title")}>
         <ShortcutInput shortcutId="transcribe" grouped={true} />
+        <ShortcutInput shortcutId="transcribe_and_send" grouped={true} />
         <ShortcutInput shortcutId="append_to_notes_file" grouped={true} />
         <ShortcutInput shortcutId="append_to_tasks_file" grouped={true} />
         <ShortcutInput shortcutId="append_to_ideas_file" grouped={true} />

@@ -159,6 +159,8 @@ pub struct CaptureAction {
     pub profile_id: String,
     #[serde(default = "default_true")]
     pub enabled: bool,
+    #[serde(default)]
+    pub auto_submit: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
@@ -762,6 +764,20 @@ fn default_capture_actions() -> Vec<CaptureAction> {
             },
             profile_id: "ru_mixed".to_string(),
             enabled: true,
+            auto_submit: false,
+        },
+        CaptureAction {
+            id: "default_paste_and_send_ru".to_string(),
+            name: "Paste and Send".to_string(),
+            binding_id: "transcribe_and_send".to_string(),
+            output_target: OutputTarget {
+                r#type: OutputTargetType::Paste,
+                file_slot: None,
+                template_type: None,
+            },
+            profile_id: "ru_mixed".to_string(),
+            enabled: true,
+            auto_submit: true,
         },
         CaptureAction {
             id: "quick_note_ru".to_string(),
@@ -770,6 +786,7 @@ fn default_capture_actions() -> Vec<CaptureAction> {
             output_target: append_file_target(CaptureFileSlot::Notes, FileTemplateType::NoteBullet),
             profile_id: "ru_mixed".to_string(),
             enabled: true,
+            auto_submit: false,
         },
         CaptureAction {
             id: "quick_task_ru".to_string(),
@@ -778,6 +795,7 @@ fn default_capture_actions() -> Vec<CaptureAction> {
             output_target: append_file_target(CaptureFileSlot::Tasks, FileTemplateType::TaskCheckbox),
             profile_id: "ru_mixed".to_string(),
             enabled: true,
+            auto_submit: false,
         },
         CaptureAction {
             id: "quick_idea_ru".to_string(),
@@ -786,6 +804,7 @@ fn default_capture_actions() -> Vec<CaptureAction> {
             output_target: append_file_target(CaptureFileSlot::Ideas, FileTemplateType::IdeaEntry),
             profile_id: "ru_mixed".to_string(),
             enabled: true,
+            auto_submit: false,
         },
         CaptureAction {
             id: "quick_shopping_ru".to_string(),
@@ -794,6 +813,7 @@ fn default_capture_actions() -> Vec<CaptureAction> {
             output_target: append_file_target(CaptureFileSlot::Shopping, FileTemplateType::ShoppingCheckbox),
             profile_id: "ru_mixed".to_string(),
             enabled: true,
+            auto_submit: false,
         },
     ]
 }
@@ -956,6 +976,23 @@ pub fn get_default_settings() -> AppSettings {
                 .to_string(),
             default_binding: default_post_process_shortcut.to_string(),
             current_binding: default_post_process_shortcut.to_string(),
+        },
+    );
+    #[cfg(any(target_os = "windows", target_os = "linux"))]
+    let default_send_shortcut = "ctrl+shift+return";
+    #[cfg(target_os = "macos")]
+    let default_send_shortcut = "option+shift+return";
+    #[cfg(not(any(target_os = "windows", target_os = "macos", target_os = "linux")))]
+    let default_send_shortcut = "alt+shift+return";
+    bindings.insert(
+        "transcribe_and_send".to_string(),
+        ShortcutBinding {
+            id: "transcribe_and_send".to_string(),
+            name: "Transcribe and Send".to_string(),
+            description: "Converts your speech into text, pastes it and sends (Enter)."
+                .to_string(),
+            default_binding: default_send_shortcut.to_string(),
+            current_binding: default_send_shortcut.to_string(),
         },
     );
     bindings.insert(

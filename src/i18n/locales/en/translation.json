@@ -170,6 +170,10 @@
           "transcribe_with_post_process": {
             "name": "Post-Processing Hotkey",
             "description": "Optional: A dedicated hotkey that always applies AI post-processing to your transcription."
+          },
+          "transcribe_and_send": {
+            "name": "Transcribe and Send",
+            "description": "Record speech, paste the text and press Enter in the active window."
           }
         },
         "errors": {

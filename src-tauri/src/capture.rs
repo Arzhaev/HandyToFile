@@ -76,7 +76,13 @@ pub fn route_capture_result(
     }
 
     match action.output_target.r#type {
-        OutputTargetType::Paste => crate::utils::paste(trimmed.to_string(), app.clone()),
+        OutputTargetType::Paste => {
+            crate::utils::paste(trimmed.to_string(), app.clone())?;
+            if action.auto_submit && !settings.auto_submit {
+                crate::clipboard::send_submit_key(app)?;
+            }
+            Ok(())
+        }
         OutputTargetType::AppendFile => {
             let file_slot = action
                 .output_target

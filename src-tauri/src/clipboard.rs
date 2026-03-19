@@ -541,6 +541,19 @@ fn paste_direct(
     input::paste_text_direct(enigo, text)
 }
 
+pub fn send_submit_key(app_handle: &AppHandle) -> Result<(), String> {
+    let settings = get_settings(app_handle);
+    let enigo_state = app_handle
+        .try_state::<EnigoState>()
+        .ok_or("Enigo state not initialized")?;
+    let mut enigo = enigo_state
+        .0
+        .lock()
+        .map_err(|e| format!("Failed to lock Enigo: {}", e))?;
+    std::thread::sleep(Duration::from_millis(50));
+    send_return_key(&mut enigo, settings.auto_submit_key)
+}
+
 fn send_return_key(enigo: &mut Enigo, key_type: AutoSubmitKey) -> Result<(), String> {
     match key_type {
         AutoSubmitKey::Enter => {
