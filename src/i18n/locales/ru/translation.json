@@ -240,27 +240,27 @@
         "mixed": "Разные",
         "saved": "Профиль изменён на {{name}}",
         "saveError": "Не удалось изменить профиль"
-      }
-    },
-    "capturePaths": {
-      "title": "Куда сохранять",
-      "saved": "Путь сохранён",
-      "saveError": "Не удалось сохранить путь",
-      "notes_path": {
-        "title": "Файл заметок",
-        "description": "Markdown-файл для быстрой записи заметок"
       },
-      "tasks_path": {
-        "title": "Файл задач",
-        "description": "Markdown-файл для быстрой записи задач"
-      },
-      "ideas_path": {
-        "title": "Файл идей",
-        "description": "Markdown-файл для быстрой записи идей"
-      },
-      "shopping_path": {
-        "title": "Файл покупок",
-        "description": "Markdown-файл для быстрой записи покупок"
+      "capturePaths": {
+        "title": "Куда сохранять",
+        "saved": "Путь сохранён",
+        "saveError": "Не удалось сохранить путь",
+        "notes_path": {
+          "title": "Файл заметок",
+          "description": "Markdown-файл для быстрой записи заметок"
+        },
+        "tasks_path": {
+          "title": "Файл задач",
+          "description": "Markdown-файл для быстрой записи задач"
+        },
+        "ideas_path": {
+          "title": "Файл идей",
+          "description": "Markdown-файл для быстрой записи идей"
+        },
+        "shopping_path": {
+          "title": "Файл покупок",
+          "description": "Markdown-файл для быстрой записи покупок"
+        }
       }
     },
     "sound": {
