@@ -10,11 +10,34 @@
 ## Что добавлено в этом форке
 
 - **Запись в файлы** — расшифровки сохраняются в Markdown-файлы (заметки, задачи, идеи, покупки)
+- **«Записать и отправить»** — горячая клавиша `Ctrl+Shift+Enter` вставляет текст и нажимает Enter
 - **Профили распознавания** — `ru_mixed`, `ru_only`, `en_only`, `raw`
 - **Горячие клавиши для захвата** — `Ctrl+Alt+N/T/I/S` для записи по категориям
+- **Русский интерфейс** — полная локализация настроек
 - **Windows-совместимость** — скрипт запуска, инструкции для чистой установки
 
-Подробнее: [README_HANDYTOFILE.md](README_HANDYTOFILE.md)
+---
+
+## Интерфейс
+
+<table>
+<tr>
+<td><b>Общие настройки</b><br>Горячие клавиши, профиль распознавания, пути к Markdown-файлам</td>
+<td><b>Модели</b><br>Управление моделями, ручная установка</td>
+</tr>
+<tr>
+<td><img src="Docs/screenshoots/general.png" width="340"/></td>
+<td><img src="Docs/screenshoots/models.png" width="340"/></td>
+</tr>
+<tr>
+<td><b>Продвинутые настройки</b><br>Ускорение Whisper/ONNX, постобработка, история</td>
+<td><b>О программе</b><br>Версия, каталоги данных, благодарности</td>
+</tr>
+<tr>
+<td><img src="Docs/screenshoots/advanced.png" width="340"/></td>
+<td><img src="Docs/screenshoots/about.png" width="340"/></td>
+</tr>
+</table>
 
 ---
 
@@ -25,13 +48,13 @@
 **Что нужно установить:** Git, Rust, Visual Studio C++ Build Tools, Node.js, Vulkan SDK
 
 ```powershell
-git clone https://github.com/<your-username>/HandyToFile.git C:\projects\HandyToFile
+git clone https://github.com/Arzhaev/HandyToFile.git C:\projects\HandyToFile
 cd C:\projects\HandyToFile
 npm install --ignore-scripts
 powershell -ExecutionPolicy Bypass -File run-dev.ps1
 ```
 
-При первом запуске скачать модель распознавания речи в настройках (раздел Models).
+При первом запуске скачать модель распознавания речи в настройках (раздел Модели).
 Если автозагрузка не работает — [инструкция по ручной установке моделей](SETUP_WINDOWS.md#шаг-11--скачать-модель-распознавания-речи).
 
 ---
@@ -64,9 +87,9 @@ powershell -ExecutionPolicy Bypass -File run-dev.ps1
 | Записать → файл покупок | `Cmd+Option+S` |
 | Отмена | `Escape` |
 
-**Режим работы:** по умолчанию Push-to-Talk — держать клавишу пока говоришь, отпустить для транскрипции. Toggle-режим (нажал → говоришь → нажал снова) включается в Settings → General.
+**Режим работы:** по умолчанию Push-to-Talk — держать клавишу пока говоришь, отпустить для транскрипции. Toggle-режим (нажал → говоришь → нажал снова) включается в Настройки → Общие.
 
-Все сочетания клавиш настраиваются в Settings.
+Все сочетания клавиш настраиваются в Настройках.
 
 ---
 
@@ -88,22 +111,45 @@ powershell -ExecutionPolicy Bypass -File run-dev.ps1
 | Parakeet V2 | 473 МБ | ★★★★★ | ★★★★★ | Только английский |
 | **Parakeet V3** | 478 МБ | ★★★★☆ | ★★★★★ | 25 языков (en, ru, uk, de, fr, es, ...) |
 
-### CPU vs GPU для Whisper
+### CPU vs GPU
 
 | | CPU | GPU |
 |---|---|---|
 | Требования | Ничего дополнительно | Ничего дополнительно (см. ниже) |
 | Скорость | Медленнее, особенно Turbo/Large | В 3–10× быстрее |
 | Модели | Все работают | Все работают |
-| Рекомендация | Small / Medium | Turbo / Large |
+| Рекомендация | Small / Medium / Parakeet | Turbo / Large |
 
 **GPU-ускорение на Windows не требует установки дополнительного ПО:**
 - Whisper использует **Vulkan** — драйвер видеокарты (NVIDIA, AMD, Intel) уже включает поддержку Vulkan
 - Parakeet использует **DirectML** — встроен в Windows 10/11, работает с любой DirectX 12 совместимой картой
 
-Выбор ускорения: Settings → Transcription → Acceleration. По умолчанию `Auto` — приложение само определяет GPU.
+Выбор ускорения: Настройки → Продвинутые → Транскрипция. По умолчанию `Auto` — приложение само определяет GPU. Можно принудительно выбрать `CPU` даже при наличии GPU.
 
 > **Совет:** Parakeet V3 работает быстро даже без GPU и поддерживает русский язык — хороший вариант для слабых машин.
+
+---
+
+## Запись в Markdown-файлы
+
+Каждая горячая клавиша записывает в свой файл в определённом формате:
+
+| Категория | Формат записи |
+|---|---|
+| Заметки (`Ctrl+Alt+N`) | `- YYYY-MM-DD HH:mm — текст` |
+| Задачи (`Ctrl+Alt+T`) | `- [ ] YYYY-MM-DD HH:mm — текст` |
+| Идеи (`Ctrl+Alt+I`) | `## YYYY-MM-DD HH:mm` + текст абзацем |
+| Покупки (`Ctrl+Alt+S`) | `- [ ] YYYY-MM-DD HH:mm — текст` |
+
+Пути к файлам настраиваются в Настройки → Общие → Куда сохранять. Папка создаётся автоматически при первой записи.
+
+По умолчанию:
+```
+C:/Users/<user>/Documents/HandyToFile/notes.md     (заметки)
+C:/Users/<user>/Documents/HandyToFile/tasks.md     (задачи)
+C:/Users/<user>/Documents/HandyToFile/ideas.md     (идеи)
+C:/Users/<user>/Documents/HandyToFile/shopping.md  (покупки)
+```
 
 ---
 
@@ -122,18 +168,6 @@ powershell -ExecutionPolicy Bypass -File run-dev.ps1
 ## Настройки
 
 Файл настроек: `%APPDATA%\com.pais.handy\settings.json`
-
-Пути к Markdown-файлам настраиваются в Settings → Capture File Paths.
-
-По умолчанию:
-```
-C:/Users/user/Documents/HandyToFile/notes.md     (заметки)
-C:/Users/user/Documents/HandyToFile/tasks.md     (задачи)
-C:/Users/user/Documents/HandyToFile/ideas.md     (идеи)
-C:/Users/user/Documents/HandyToFile/shopping.md  (покупки)
-```
-
-Папка создаётся автоматически при первой записи.
 
 ---
 
@@ -154,7 +188,7 @@ npm run tauri dev
 
 ## Лицензии
 
-- Этот форк: [MIT License](LICENSE)
+- Этот форк: [MIT License](LICENSE), © 2026 Arzhaev
 - Оригинальный Handy: [MIT License](https://github.com/cjpais/Handy/blob/main/LICENSE), © 2025 CJ Pais
 - whisper.cpp: [MIT License](vendor/whisper-rs-sys/whisper.cpp/LICENSE), © The ggml authors
 - whisper-rs-sys: [Unlicense](vendor/whisper-rs-sys/LICENSE) (public domain)
