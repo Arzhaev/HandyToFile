@@ -41,11 +41,34 @@
 
 ---
 
+## Зависимости для сборки из исходников
+
+### Windows
+
+| Зависимость | Ссылка | Примечание |
+|---|---|---|
+| Git | [git-scm.com](https://git-scm.com/download/win) | |
+| Rust (rustup) | [rustup.rs](https://rustup.rs/) | Установить stable toolchain |
+| Visual Studio C++ Build Tools | [visualstudio.microsoft.com](https://visualstudio.microsoft.com/visual-cpp-build-tools/) | Компонент «Desktop development with C++» |
+| Node.js | [nodejs.org](https://nodejs.org/) | v18+ |
+| Vulkan SDK | [vulkan.lunarg.com](https://vulkan.lunarg.com/sdk/home#windows) | Для GPU-ускорения Whisper |
+| LLVM (libclang) | [github.com/llvm/llvm-project/releases](https://github.com/llvm/llvm-project/releases) | Нужен для компиляции Rust-биндингов |
+
+Подробная пошаговая инструкция: [SETUP_WINDOWS.md](SETUP_WINDOWS.md)
+
+### macOS
+
+| Зависимость | Ссылка | Примечание |
+|---|---|---|
+| Rust (rustup) | [rustup.rs](https://rustup.rs/) | |
+| Bun | [bun.sh](https://bun.sh/) | Или Node.js |
+| Xcode Command Line Tools | `xcode-select --install` | |
+
+---
+
 ## Быстрый старт (Windows)
 
 Полная инструкция с нуля: [SETUP_WINDOWS.md](SETUP_WINDOWS.md)
-
-**Что нужно установить:** Git, Rust, Visual Studio C++ Build Tools, Node.js, Vulkan SDK
 
 ```powershell
 git clone https://github.com/Arzhaev/HandyToFile.git C:\projects\HandyToFile
