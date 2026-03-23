@@ -58,6 +58,10 @@
       }
     },
     "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": true
+      },
       "nsis": {
         "template": "nsis/installer.nsi"
       }
